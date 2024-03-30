@@ -62,12 +62,15 @@ class TrainModelClassifier:
         elif self.model_name == "vig_ti_224_gelu":
                 model = vig_ti_224_gelu()
                 model.compile()
+                model.to(self.device)
         elif self.model_name == "vig_s_224_gelu":
                 model = vig_s_224_gelu()
                 model.compile()
+                model.to(self.device)
         elif self.model_name == "vig_b_224_gelu":
                 model = vig_b_224_gelu()
                 model.compile()
+                model.to(self.device)
         else:
             raise ValueError("Invalid model name.")
         return model
