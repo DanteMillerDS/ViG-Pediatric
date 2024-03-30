@@ -1,0 +1,3 @@
+[submodule "Efficient-AI-Backbones"]
+	path = Efficient-AI-Backbones
+	url = https://github.com/huawei-noah/Efficient-AI-Backbones.git
