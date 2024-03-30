@@ -187,6 +187,7 @@ def vig_s_224_gelu(pretrained=False, **kwargs):
     model.default_cfg = default_cfgs['gnn_patch16_224']
     return model
 
+
 @register_model
 def vig_b_224_gelu(pretrained=False, **kwargs):
     class OptInit:

@@ -99,7 +99,7 @@ class TrainModelClassifier:
         cr, cm = classification_report(y_true, y_pred), confusion_matrix(y_true, y_pred)
         return acc, prec, rec, auc, cr, cm
 
-    def save_results(self, acc, prec, rec, auc, cr, cm):
+    def save_results(self, acc, prec, rec, auc, cr, cm, additional_evaluation = False):
         """
         Saves the evaluation results to a file within a directory specific to the medical type and CLIP model.
         :param acc: The accuracy of the classification.
@@ -110,10 +110,16 @@ class TrainModelClassifier:
         :param cm: The confusion matrix.
         :return: None. Results are saved to a text file.
         """
-        directory = f"results/finetune/{self.medical_type}/{self.model_name}"
-        filename = "classification_results.txt"
-        filepath = os.path.join(directory, filename)
-        os.makedirs(directory, exist_ok=True)
+        if additional_evaluation:
+            directory = f"results/zero_shot/{self.medical_type}/{self.model_name}"
+            filename = "classification_results.txt"
+            filepath = os.path.join(directory, filename)
+            os.makedirs(directory, exist_ok=True)
+        else:
+            directory = f"results/finetune/{self.medical_type}/{self.model_name}"
+            filename = "classification_results.txt"
+            filepath = os.path.join(directory, filename)
+            os.makedirs(directory, exist_ok=True)
         with open(filepath, "w") as file:
             file.write(f"Accuracy: {acc:.4f}\nPrecision: {prec:.4f}\nRecall: {rec:.4f}\nAUC: {auc:.4f}\n")
             file.write(f'Classification Report\n\n{cr}\n\nConfusion Matrix\n\n{np.array2string(cm)}')
