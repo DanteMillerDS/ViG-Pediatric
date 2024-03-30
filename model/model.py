@@ -1,5 +1,3 @@
-!git clone https://github.com/huawei-noah/Efficient-AI-Backbones.git
-!pip install timm
 import math
 import torch
 import torch.nn as nn

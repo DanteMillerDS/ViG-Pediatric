@@ -1,0 +1,5 @@
+ftfy
+regex
+timm
+tqdm
+git+https://github.com/huawei-noah/Efficient-AI-Backbones.git
