@@ -36,7 +36,6 @@ default_cfgs = {
     ),
 }
 
-
 class FFN(nn.Module):
     def __init__(self, in_features, hidden_features=None, out_features=None, act='relu', drop_path=0.0):
         super().__init__()
@@ -60,7 +59,6 @@ class FFN(nn.Module):
         x = self.fc2(x)
         x = self.drop_path(x) + shortcut
         return x
-
 
 class Stem(nn.Module):
     """ Image to Visual Word Embedding
@@ -88,7 +86,6 @@ class Stem(nn.Module):
     def forward(self, x):
         x = self.convs(x)
         return x
-
 
 class DeepGCN(torch.nn.Module):
     def __init__(self, opt):
@@ -144,7 +141,6 @@ class DeepGCN(torch.nn.Module):
         x = F.adaptive_avg_pool2d(x, 1)
         return self.prediction(x).squeeze(-1).squeeze(-1)
 
-
 @register_model
 def vig_ti_224_gelu(pretrained=False, **kwargs):
     class OptInit:
@@ -168,7 +164,6 @@ def vig_ti_224_gelu(pretrained=False, **kwargs):
     model.default_cfg = default_cfgs['gnn_patch16_224']
     return model
 
-
 @register_model
 def vig_s_224_gelu(pretrained=False, **kwargs):
     class OptInit:
@@ -191,7 +186,6 @@ def vig_s_224_gelu(pretrained=False, **kwargs):
     model = DeepGCN(opt)
     model.default_cfg = default_cfgs['gnn_patch16_224']
     return model
-
 
 @register_model
 def vig_b_224_gelu(pretrained=False, **kwargs):

@@ -20,7 +20,7 @@ class TrainModelClassifier:
         self.configure()
         self.model = self.load_model()
         self.wd = 0.1 if self.medical_type == "ucsd" else 1e-5
-        self.optimizer = optim.Adam(self.clip_model.parameters(), lr=1e-5,weight_decay = self.wd)
+        self.optimizer = optim.Adam(self.model.parameters(), lr=1e-5,weight_decay = self.wd)
         self.epochs = epochs
         self.loss = nn.BCEWithLogitsLoss()
         self.metric_history  = {
@@ -72,10 +72,9 @@ class TrainModelClassifier:
             raise ValueError("Invalid model name.")
         return model
 
-
     def evaluate(self, generators, steps):
         """
-        Evaluates the CLIP model using provided data loaders and computes classification metrics.
+        Evaluates the model using provided data loaders and computes classification metrics.
         :param generators: A dictionary of data loaders for each dataset (e.g., 'Train', 'Validation', 'Test').
         :param steps: A dictionary specifying the number of batches to evaluate for each dataset.
         :param categories: A list of categories for classification.
@@ -192,7 +191,6 @@ class TrainModelClassifier:
                     print("Early stopping triggered.")
                     break
         self.model.load_state_dict(torch.load(model_save_path))
-
 
     def run(self, generators, steps):
         """

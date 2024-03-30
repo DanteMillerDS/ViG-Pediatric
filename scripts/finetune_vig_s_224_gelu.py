@@ -16,8 +16,8 @@ def run_finetune_clip(medical_type, model_type, batch_size):
     """
     generators, lengths = load_data.create_loader(medical_type, batch_size,finetune = True)
     visualize.save_random_images_from_generators(generators, [medical_type, model_type, "finetune"], 2)
-    if model_type == "vig_ti_224_gelu":
-        classifier = TrainModelClassifier(medical_type)
+    if model_type == "vig_s_224_gelu":
+        classifier = TrainModelClassifier(medical_type,model_type)
         classifier.run(generators, lengths)
         return classifier
     else:
@@ -25,8 +25,8 @@ def run_finetune_clip(medical_type, model_type, batch_size):
 
 if __name__ == "__main__":
     extract_data.mount_and_process()
-    batch_size = 256
-    model_types = ['vig_ti_224_gelu']
+    batch_size = 128
+    model_types = ['vig_s_224_gelu']
     medical_types = ['ucsd', 'ori']
     ucsd_classifier = run_finetune_clip(medical_types[0], model_types[0], batch_size)
     ori_classifier = run_finetune_clip(medical_types[1], model_types[0], batch_size)

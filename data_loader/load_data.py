@@ -94,7 +94,7 @@ def prepare_data_generators(samples, labels, batch_size, finetune = False):
       data_generator = image.ImageDataGenerator(validation_split=0.20)
     
     generator = data_generator.flow(
-          x=np.array([image for image, label in image_list]).transpose(0, 2, 3, 1),
+          x=np.array([image for image, label in image_list]),
           y=np.array([label for image, label in image_list]),
           batch_size=batch_size,
           shuffle=True,
