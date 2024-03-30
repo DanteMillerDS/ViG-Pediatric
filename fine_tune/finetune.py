@@ -2,20 +2,20 @@ import numpy as np
 from tqdm import tqdm
 from torch import nn
 import torch.optim as optim
-import clip
 import torch
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 from sklearn.metrics import classification_report, confusion_matrix
 import os
 import matplotlib.pyplot as plt
+from model.vig_model import vig_ti_224_gelu, vig_s_224_gelu, vig_b_224_gelu
 
-class TrainClipClassifier:
-    def __init__(self, medical_type, epochs=50):
+class TrainModelClassifier:
+    def __init__(self, medical_type, model_name, epochs=50):
         """
         Initializes the Model with a specific medical type and computational device.
         """
         self.medical_type = medical_type
-        self.model_name = None
+        self.model_name = model_name
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.configure()
         self.model = self.load_model()
