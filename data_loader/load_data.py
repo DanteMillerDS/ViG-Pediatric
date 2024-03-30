@@ -4,8 +4,7 @@ from PIL import Image
 from torchvision import transforms
 import torch
 from keras.preprocessing import image
-from medclip import MedCLIPProcessor
-import clip
+from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 np.random.seed(100)
 
 class ImagePreprocessor:
@@ -14,10 +13,9 @@ class ImagePreprocessor:
     It supports preprocessing for both 'medclip' and other generic models
     by adjusting the image format accordingly.
     """
-    def __init__(self, medclip_processor, clip_processor, model_type):
-        self.medclip_processor = medclip_processor
-        self.clip_processor = clip_processor
-        self.model_type = model_type
+    def __init__(self):
+        self.mean = np.array(IMAGENET_DEFAULT_MEAN)
+        self.std = np.array(IMAGENET_DEFAULT_STD)
 
     def __call__(self, jpeg_path):
         """
@@ -25,15 +23,10 @@ class ImagePreprocessor:
         :param jpeg_path: Path to the JPEG image file.
         :return: Preprocessed image data.
         """
-        if self.model_type == "medclip":
-            img = Image.open(jpeg_path)
-            inputs = self.medclip_processor(images=img)
-        else:
-            # img = image.load_img(jpeg_path, target_size=(224, 224),
-            #                      color_mode='rgb', interpolation='lanczos')
-            # inputs = np.asarray(img, dtype='uint8') / 255
-            img = Image.open(jpeg_path)
-            inputs = self.clip_processor(img)
+        img = image.load_img(jpeg_path, target_size=(224, 224),
+                                 color_mode='rgb', interpolation='lanczos')
+        inputs = np.asarray(img, dtype='uint8') / 255
+        inputs = (inputs - self.mean) / self.std
         return inputs
 
 class AiSeverity:
@@ -41,14 +34,9 @@ class AiSeverity:
     A class to manage the severity analysis AI models for medical images,
     including initializing the model, device setup, and image preprocessing.
     """
-    def __init__(self, medical_type, model_type, device=None):
-        self.medical_type = medical_type
-        self.model_type = model_type
-        self.medclip_processor = MedCLIPProcessor()
-        _, preprocess = clip.load("ViT-B/32",device="cpu",jit=False)
-        self.clip_processor = preprocess
+    def __init__(self, device=None):
         self.device = device if device is not None else torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.preprocessor = ImagePreprocessor(medclip_processor=self.medclip_processor, clip_processor = self.clip_processor, model_type=self.model_type)
+        self.preprocessor = ImagePreprocessor()
 
     def process_image(self, jpeg_path):
         """
@@ -80,7 +68,7 @@ def process_folder(folder_path, ai_severity):
                 file_labels[file_path] = label
     return file_samples, file_labels
 
-def prepare_data_generators(samples, labels, batch_size, model_type, finetune):
+def prepare_data_generators(samples, labels, batch_size, finetune = False):
     """
     Prepares data generators for training, validation, and testing datasets.
     :param samples: A dictionary of image paths and their processed data.
@@ -89,7 +77,7 @@ def prepare_data_generators(samples, labels, batch_size, model_type, finetune):
     :param model_type: The model type to tailor the data preparation.
     :return: The length of data and the data generator.
     """
-    image_list = [(sample if model_type != "medclip" else sample["pixel_values"][0], labels[key]) 
+    image_list = [(sample, labels[key]) 
                   for key, sample in samples.items()]
     if finetune:
       data_generator = image.ImageDataGenerator(
@@ -106,7 +94,7 @@ def prepare_data_generators(samples, labels, batch_size, model_type, finetune):
       data_generator = image.ImageDataGenerator(validation_split=0.20)
     
     generator = data_generator.flow(
-          x=np.array([image for image, label in image_list]),
+          x=np.array([image for image, label in image_list]).transpose(0, 2, 3, 1),
           y=np.array([label for image, label in image_list]),
           batch_size=batch_size,
           shuffle=True,
@@ -114,7 +102,7 @@ def prepare_data_generators(samples, labels, batch_size, model_type, finetune):
       )
     return len(generator), generator
 
-def create_loader(medical_type, batch_size, model_type, finetune = False):
+def create_loader(medical_type, batch_size, finetune = False):
     """
     Initializes the AISeverity model, processes image folders, and prepares data generators.
     :param medical_type: The medical condition or type to analyze.
@@ -122,13 +110,13 @@ def create_loader(medical_type, batch_size, model_type, finetune = False):
     :param model_type: The model type for specific preprocessing needs.
     :return: Lists of data generators and their corresponding lengths.
     """
-    ai_severity = AiSeverity(medical_type, model_type)
+    ai_severity = AiSeverity()
     train_samples, train_labels = process_folder(f'{medical_type}/Train', ai_severity)
     validation_samples, validation_labels = process_folder(f'{medical_type}/Validation', ai_severity)
     test_samples, test_labels = process_folder(f'{medical_type}/Test', ai_severity)
-    train_length, train_generator = prepare_data_generators(train_samples, train_labels, batch_size, model_type,finetune and True)
-    validation_length, validation_generator = prepare_data_generators(validation_samples, validation_labels, batch_size, model_type,finetune and True)
-    test_length, test_generator = prepare_data_generators(test_samples, test_labels, batch_size, model_type,finetune and False)
+    train_length, train_generator = prepare_data_generators(train_samples, train_labels, batch_size,finetune and True)
+    validation_length, validation_generator = prepare_data_generators(validation_samples, validation_labels, batch_size,finetune and True)
+    test_length, test_generator = prepare_data_generators(test_samples, test_labels, batch_size,finetune and False)
     lengths = [train_length, validation_length, test_length]
     dataset_types = ['Train', 'Validation', 'Test']
     steps = dict(zip(dataset_types, lengths))
