@@ -32,7 +32,7 @@ class TrainModelClassifier:
         self.model = self.load_model()
         self.wd = 0.1 if self.medical_type == "ucsd" else 1e-5
         self.optimizer = optim.Adam(self.model.parameters(), lr=1e-5,weight_decay = self.wd)
-        self.epochs = epochs
+        self.epochs = 1
         self.loss = nn.BCEWithLogitsLoss()
         self.metric_history  = {
             'train_loss': [],
