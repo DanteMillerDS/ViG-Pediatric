@@ -23,7 +23,7 @@ class ImagePreprocessor:
         """
         img = image.load_img(jpeg_path, target_size=(224, 224),
                                  color_mode='rgb', interpolation='lanczos')
-        inputs = np.asarray(img, dtype='uint8') #/ 255
+        inputs = np.asarray(img, dtype='uint8') / 255
         return inputs
 
 class AiSeverity:
@@ -84,13 +84,11 @@ def prepare_data_generators(samples, labels, batch_size, finetune = False):
             rotation_range=20,
             width_shift_range=0.05,
             height_shift_range=0.05,
-            shear_range=0.05,
-            featurewise_center=True, featurewise_std_normalization=True
+            shear_range=0.05
         )
     
     else:
-      data_generator = image.ImageDataGenerator(validation_split=0.20,
-                                                featurewise_center=True, featurewise_std_normalization=True)
+      data_generator = image.ImageDataGenerator(validation_split=0.20)
     
     generator = data_generator.flow(
           x=np.array([image for image, label in image_list]),
