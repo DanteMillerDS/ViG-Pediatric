@@ -8,8 +8,8 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_a
 from sklearn.metrics import classification_report, confusion_matrix
 import os
 import matplotlib.pyplot as plt
-from model.vig_model import vig_ti_224_gelu, vig_s_224_gelu, pvig_m_224_gelu, vig_b_224_gelu
-from model.pvig_model import pvig_ti_224_gelu, pvig_s_224_gelu, pvig_b_224_gelu
+from model.vig_model import vig_ti_224_gelu, vig_s_224_gelu, vig_b_224_gelu
+from model.pvig_model import pvig_ti_224_gelu, pvig_s_224_gelu, pvig_b_224_gelu, pvig_m_224_gelu
 
 class TrainModelClassifier:
     def __init__(self, medical_type, model_name, epochs=50):
