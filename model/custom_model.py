@@ -1,7 +1,10 @@
+# Selected models from https://pytorch.org/vision/0.9/models.html
+# Model list includes resnet50, alexnet, vgg19, squeezenet, densenet, inception, googlenet, mobilenet_v3_large, wide_resnet50_2, mnasnet
+# Many more can be considered here
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
 
 class Model(nn.Module):
     """
