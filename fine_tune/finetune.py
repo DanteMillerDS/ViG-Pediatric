@@ -16,6 +16,15 @@ class TrainModelClassifier:
         """
         Initializes the Model with a specific medical type and computational device.
         """
+        self.model_dictionary = {
+            "vig_ti_224_gelu": vig_ti_224_gelu,
+            "vig_s_224_gelu": vig_s_224_gelu,
+            "vig_b_224_gelu": vig_b_224_gelu,
+            "pvig_ti_224_gelu": pvig_ti_224_gelu,
+            "pvig_s_224_gelu": pvig_s_224_gelu,
+            "pvig_m_224_gelu": pvig_m_224_gelu,
+            "pvig_b_224_gelu": pvig_b_224_gelu,
+        }
         self.medical_type = medical_type
         self.model_name = model_name
         self.configure()
@@ -41,16 +50,6 @@ class TrainModelClassifier:
         self.early_stopping_counter = 0
         self.best_val_loss = float('inf')
         self.early_stop = False
-        self.model_dictionary = {
-            "vig_ti_224_gelu": vig_ti_224_gelu,
-            "vig_s_224_gelu": vig_s_224_gelu,
-            "vig_b_224_gelu": vig_b_224_gelu,
-            "pvig_ti_224_gelu": pvig_ti_224_gelu,
-            "pvig_s_224_gelu": pvig_s_224_gelu,
-            "pvig_m_224_gelu": pvig_m_224_gelu,
-            "pvig_b_224_gelu": pvig_b_224_gelu,
-        }
-
 
     def configure(self):
         """
