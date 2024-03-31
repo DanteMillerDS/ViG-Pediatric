@@ -26,18 +26,14 @@ class TrainModelClassifier:
             "pvig_s_224_gelu": pvig_s_224_gelu,
             "pvig_m_224_gelu": pvig_m_224_gelu,
             "pvig_b_224_gelu": pvig_b_224_gelu,
-            "resnet18": models.resnet18(),
+            "resnet50": models.resnet50(),
             "alexnet": models.alexnet(),
-            "vgg16": models.vgg16(),
+            "vgg19": models.vgg19(),
             "squeezenet": models.squeezenet1_0(),
-            "densenet": models.densenet161(),
+            "densenet": models.densenet121(),
             "inception": models.inception_v3(),
             "googlenet": models.googlenet(),
-            "shufflenet": models.shufflenet_v2_x1_0(),
-            "mobilenet_v2": models.mobilenet_v2(),
             "mobilenet_v3_large": models.mobilenet_v3_large(),
-            "mobilenet_v3_small": models.mobilenet_v3_small(),
-            "resnext50_32x4d": models.resnext50_32x4d(),
             "wide_resnet50_2": models.wide_resnet50_2(),
             "mnasnet": models.mnasnet1_0()
             }
@@ -87,7 +83,7 @@ class TrainModelClassifier:
         if self.model_name is None:
             raise ValueError("Model name not specified.")
         elif self.model_name in self.model_dictionary.keys():
-            if self.model_name in ["resnet18", "alexnet", "vgg16", "squeezenet", "densenet", "inception", "googlenet", "shufflenet", "mobilenet_v2", "mobilenet_v3_large", "mobilenet_v3_small", "resnext50_32x4d", "wide_resnet50_2", "mnasnet"]:
+            if self.model_name in ["resnet50", "alexnet", "vgg19", "squeezenet", "densenet", "inception", "googlenet", "mobilenet_v3_large", "wide_resnet50_2", "mnasnet"]:
                 model = self.model_dictionary[self.model_name]
                 model = Model(base_model=model)
             else:

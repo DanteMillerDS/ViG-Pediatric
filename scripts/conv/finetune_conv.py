@@ -16,7 +16,7 @@ def run_finetune_convs(medical_type, model_type, batch_size, additional_evaluati
     """
     generators, lengths = load_data.create_loader(medical_type, batch_size,finetune = True)
     visualize.save_random_images_from_generators(generators, [medical_type, model_type, "finetune"], 2)
-    if model_type in ["resnet18", "alexnet", "vgg16", "squeezenet", "densenet", "inception", "googlenet", "shufflenet", "mobilenet_v2", "mobilenet_v3_large", "mobilenet_v3_small", "resnext50_32x4d", "wide_resnet50_2", "mnasnet"]:
+    if model_type in ["resnet50", "alexnet", "vgg19", "squeezenet", "densenet", "inception", "googlenet", "mobilenet_v3_large", "wide_resnet50_2", "mnasnet"]:
         classifier = TrainModelClassifier(medical_type,model_type)
         classifier.run(generators, lengths)
         if additional_evaluation:
@@ -31,7 +31,7 @@ def run_finetune_convs(medical_type, model_type, batch_size, additional_evaluati
 if __name__ == "__main__":
     extract_data.mount_and_process()
     batch_size = 128
-    models_types = ["resnet18", "alexnet", "vgg16", "squeezenet", "densenet", "inception", "googlenet", "shufflenet", "mobilenet_v2", "mobilenet_v3_large", "mobilenet_v3_small", "resnext50_32x4d", "wide_resnet50_2", "mnasnet"]
+    models_types = ["resnet50", "alexnet", "vgg19", "squeezenet", "densenet", "inception", "googlenet", "mobilenet_v3_large", "wide_resnet50_2", "mnasnet"]
     medical_types = ['ucsd', 'ori']
     for i in range(len(models_types)):
         ucsd_classifier = run_finetune_convs(medical_types[0], models_types[i], batch_size, additional_evaluation=medical_types[1])
