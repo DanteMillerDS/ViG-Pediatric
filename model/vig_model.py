@@ -1,6 +1,6 @@
 # Description: This file contains the implementation of the ViG models.
 # The file was taken from the Efficient-AI-Backbones repository.
-# Link: https://github.com/huawei-noah/Efficient-AI-Backbones/blob/master/vig_pytorch/pyramid_vig.py
+# Link: https://github.com/huawei-noah/Efficient-AI-Backbones/blob/master/vig_pytorch/vig.py
 
 import math
 import torch

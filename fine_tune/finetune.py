@@ -8,7 +8,8 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_a
 from sklearn.metrics import classification_report, confusion_matrix
 import os
 import matplotlib.pyplot as plt
-from model.vig_model import vig_ti_224_gelu, vig_s_224_gelu, vig_b_224_gelu
+from model.vig_model import vig_ti_224_gelu, vig_s_224_gelu, pvig_m_224_gelu, vig_b_224_gelu
+from model.pvig_model import pvig_ti_224_gelu, pvig_s_224_gelu, pvig_b_224_gelu
 
 class TrainModelClassifier:
     def __init__(self, medical_type, model_name, epochs=50):
@@ -40,6 +41,15 @@ class TrainModelClassifier:
         self.early_stopping_counter = 0
         self.best_val_loss = float('inf')
         self.early_stop = False
+        self.model_dictionary = {
+            "vig_ti_224_gelu": vig_ti_224_gelu,
+            "vig_s_224_gelu": vig_s_224_gelu,
+            "vig_b_224_gelu": vig_b_224_gelu,
+            "pvig_ti_224_gelu": pvig_ti_224_gelu,
+            "pvig_s_224_gelu": pvig_s_224_gelu,
+            "pvig_m_224_gelu": pvig_m_224_gelu,
+            "pvig_b_224_gelu": pvig_b_224_gelu,
+        }
 
     def configure(self):
         """
@@ -60,18 +70,10 @@ class TrainModelClassifier:
         """
         if self.model_name is None:
             raise ValueError("Model name not specified.")
-        elif self.model_name == "vig_ti_224_gelu":
-                model = vig_ti_224_gelu()
-                model.compile()
-                model.to(self.device)
-        elif self.model_name == "vig_s_224_gelu":
-                model = vig_s_224_gelu()
-                model.compile()
-                model.to(self.device)
-        elif self.model_name == "vig_b_224_gelu":
-                model = vig_b_224_gelu()
-                model.compile()
-                model.to(self.device)
+        elif self.model_name in self.model_dictionary.keys():
+            model = self.model_dictionary[self.model_name]()
+            model.compile()
+            model.to(self.device)
         else:
             raise ValueError("Invalid model name.")
         return model
