@@ -21,7 +21,7 @@ def run_finetune_vig_b_224_gelu(medical_type, model_type, batch_size, additional
         classifier.run(generators, lengths)
         if additional_evaluation:
             generators, lengths = load_data.create_loader(additional_evaluation, batch_size,finetune = False)
-            steps = {"Train":lengths[0], "Validation":lengths[1], "Test":lengths[2]}
+            steps = {"Train":lengths["Train"], "Validation":lengths["Validation"], "Test":lengths["Test"]}
             acc, prec, rec, auc, cr, cm = classifier.evaluate(generators, steps)
             classifier.save_results(acc, prec, rec, auc, cr, cm, additional_evaluation = True)
             
