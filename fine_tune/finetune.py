@@ -184,7 +184,7 @@ class TrainModelClassifier:
                 plt.legend(loc='best')
                 plt.title(metric_name.capitalize())
                 plt.tight_layout()
-                plt.savefig(f'results/t_pretrained/{self.medical_type}/clip/metrics_{metric_name}_epoch.png')
+                plt.savefig(f'results/finetune/{self.medical_type}/{self.model_name}/metrics_{metric_name}_epoch.png')
                 plt.close()
 
             print(f"Epoch {epoch+1}/{self.epochs}")
