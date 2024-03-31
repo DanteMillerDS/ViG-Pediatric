@@ -87,9 +87,11 @@ class TrainModelClassifier:
         if self.model_name is None:
             raise ValueError("Model name not specified.")
         elif self.model_name in self.model_dictionary.keys():
-            model = self.model_dictionary[self.model_name]()
             if self.model_name in ["resnet18", "alexnet", "vgg16", "squeezenet", "densenet", "inception", "googlenet", "shufflenet", "mobilenet_v2", "mobilenet_v3_large", "mobilenet_v3_small", "resnext50_32x4d", "wide_resnet50_2", "mnasnet"]:
-                model = Model(model)
+                model = self.model_dictionary[self.model_name]
+                model = Model(base_model=model)
+            else:
+                model = self.model_dictionary[self.model_name]()
             model.compile()
             model.to(self.device)
         else:
