@@ -14,9 +14,7 @@ class ImagePreprocessor:
     by adjusting the image format accordingly.
     """
     def __init__(self):
-        self.mean = np.array(IMAGENET_DEFAULT_MEAN)
-        self.std = np.array(IMAGENET_DEFAULT_STD)
-
+        pass
     def __call__(self, jpeg_path):
         """
         Loads and preprocesses an image based on the model type.
@@ -25,8 +23,7 @@ class ImagePreprocessor:
         """
         img = image.load_img(jpeg_path, target_size=(224, 224),
                                  color_mode='rgb', interpolation='lanczos')
-        inputs = np.asarray(img, dtype='uint8') / 255
-        inputs = (inputs - self.mean) / self.std
+        inputs = np.asarray(img, dtype='uint8') #/ 255
         return inputs
 
 class AiSeverity:
@@ -88,10 +85,12 @@ def prepare_data_generators(samples, labels, batch_size, finetune = False):
             width_shift_range=0.05,
             height_shift_range=0.05,
             shear_range=0.05,
+            featurewise_center=True, featurewise_std_normalization=True
         )
     
     else:
-      data_generator = image.ImageDataGenerator(validation_split=0.20)
+      data_generator = image.ImageDataGenerator(validation_split=0.20,
+                                                featurewise_center=True, featurewise_std_normalization=True)
     
     generator = data_generator.flow(
           x=np.array([image for image, label in image_list]),
