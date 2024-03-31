@@ -14,7 +14,7 @@ import torchvision.models as models
 from model.custom_model import Model
 
 class TrainModelClassifier:
-    def __init__(self, medical_type, model_name, mean_and_std, epochs=50):
+    def __init__(self, medical_type, model_name, mean_and_std, epochs=20):
         """
         Initializes the Model with a specific medical type and computational device.
         """
@@ -43,7 +43,7 @@ class TrainModelClassifier:
         self.configure()
         self.device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = self.load_model()
-        self.wd = 0.1 if self.medical_type == "ucsd" else 1e-5
+        self.wd = 0.001 if self.medical_type == "ucsd" else 1e-6
         self.optimizer = optim.Adam(self.model.parameters(), lr=1e-5,weight_decay = self.wd)
         self.epochs = epochs
         self.loss = nn.BCEWithLogitsLoss()
