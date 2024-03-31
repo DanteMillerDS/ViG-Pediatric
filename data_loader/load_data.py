@@ -23,7 +23,7 @@ class ImagePreprocessor:
         """
         img = image.load_img(jpeg_path, target_size=(224, 224),
                                  color_mode='rgb', interpolation='lanczos')
-        inputs = np.asarray(img, dtype='uint8')
+        inputs = np.asarray(img, dtype=np.float32) / 255.0
         if mean_and_std:
             inputs = (inputs - mean_and_std["mean"]) / mean_and_std["std"]
         else:

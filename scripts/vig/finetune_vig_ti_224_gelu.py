@@ -16,12 +16,13 @@ def run_finetune_vig_ti_224_gelu(medical_type, model_type, batch_size, additiona
     :param batch_size: The batch size for data loading.
     """
     generators, lengths = load_data.create_loader(medical_type, batch_size,finetune = True, mean_and_std = mean_and_std)
-    visualize.save_random_images_from_generators(generators, [medical_type, model_type, "finetune"], 2)
+    visualize.save_random_images_from_generators(generators, [medical_type, model_type, "finetune"], 2, mean_and_std = mean_and_std)
     if model_type == "vig_ti_224_gelu":
         classifier = TrainModelClassifier(medical_type,model_type, mean_and_std = mean_and_std)
         classifier.run(generators, lengths)
         if additional_evaluation:
             generators, lengths = load_data.create_loader(additional_evaluation, batch_size,finetune = False, mean_and_std = mean_and_std)
+            visualize.save_random_images_from_generators(generators, [additional_evaluation, model_type, "zero_shot"], 2, mean_and_std = mean_and_std)
             steps = {"Train":lengths["Train"], "Validation":lengths["Validation"], "Test":lengths["Test"]}
             acc, prec, rec, auc, cr, cm = classifier.evaluate(generators, steps)
             classifier.save_results(acc, prec, rec, auc, cr, cm, additional_evaluation = True, additional_medical_type = additional_evaluation)

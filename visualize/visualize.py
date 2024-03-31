@@ -15,7 +15,7 @@ def create_save_directory(info):
     os.makedirs(directory, exist_ok=True)
     return filepath
 
-def select_random_images(generator, num_images=2):
+def select_random_images(generator, num_images=2, mean_and_std = False):
     """
     Selects a specified number of random images from a data generator.
     :param generator: The data generator from which to draw images.
@@ -31,6 +31,9 @@ def select_random_images(generator, num_images=2):
         label = labels[idx]
         if image.shape[0] < image.shape[-1]:
             image = image.transpose(1, 2, 0)
+            if mean_and_std:
+                image = image * mean_and_std["std"] + mean_and_std["mean"]
+                image = image.clip(0, 1)
         selected_images.append(image)
         selected_labels.append(label)
     generator.reset()
@@ -56,7 +59,7 @@ def plot_images(set_images_labels, titles, filepath):
     print(f"Results saved to {filepath}")
     plt.close()
 
-def save_random_images_from_generators(generators, info, num_images=2):
+def save_random_images_from_generators(generators, info, num_images=2, mean_and_std = False):
     """
     Saves random images from data generators into a combined image file.
     :param generators: A list of data generators from which to draw images.
@@ -67,7 +70,7 @@ def save_random_images_from_generators(generators, info, num_images=2):
     filepath = create_save_directory(info)
     all_images = []
     for gen in generators:
-        selected_images,selected_labels = select_random_images(gen, num_images)
+        selected_images,selected_labels = select_random_images(gen, num_images, mean_and_std = mean_and_std)
         all_images.append((selected_images,selected_labels))
         gen.reset()
     plot_images(all_images, ["Train", "Validation", "Test"], filepath)
