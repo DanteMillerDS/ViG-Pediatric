@@ -51,6 +51,7 @@ class TrainModelClassifier:
             "pvig_b_224_gelu": pvig_b_224_gelu,
         }
 
+
     def configure(self):
         """
         Configures the system environment for optimal performance.
