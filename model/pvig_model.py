@@ -12,8 +12,11 @@ from timm.data import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 from timm.models.helpers import load_pretrained
 from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 from timm.models.registry import register_model
-
-from gcn_lib import Grapher, act_layer
+import importlib
+module_name = "Efficient-AI-Backbones.vig_pytorch.gcn_lib"
+gcn_lib = importlib.import_module(module_name)
+Grapher = gcn_lib.Grapher
+act_layer = gcn_lib.act_layer
 
 def _cfg(url='', **kwargs):
     return {
