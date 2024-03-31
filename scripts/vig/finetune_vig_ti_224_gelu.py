@@ -38,4 +38,4 @@ if __name__ == "__main__":
     model_types = ['vig_ti_224_gelu']
     medical_types = ['ucsd', 'ori']
     ucsd_classifier = run_finetune_vig_ti_224_gelu(medical_types[0], model_types[0], batch_size, additional_evaluation=medical_types[1], mean_and_std = mean_and_std[medical_types[0]])
-    ori_classifier = run_finetune_vig_ti_224_gelu(medical_types[1], model_types[0], batch_size, additional_evaluation=medical_types[0],mean_and_std = mean_and_std[medical_types[1]])
+    ori_classifier = run_finetune_vig_ti_224_gelu(medical_types[1], model_types[0], batch_size , additional_evaluation=medical_types[0],mean_and_std = mean_and_std[medical_types[1]])
