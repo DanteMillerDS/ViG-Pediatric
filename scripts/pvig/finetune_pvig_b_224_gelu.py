@@ -23,7 +23,7 @@ def run_finetune_pvig_b_224_gelu(medical_type, model_type, batch_size, additiona
             generators, lengths = load_data.create_loader(additional_evaluation, batch_size,finetune = False)
             steps = {"Train":lengths["Train"], "Validation":lengths["Validation"], "Test":lengths["Test"]}
             acc, prec, rec, auc, cr, cm = classifier.evaluate(generators, steps)
-            classifier.save_results(acc, prec, rec, auc, cr, cm, additional_evaluation = True)
+            classifier.save_results(acc, prec, rec, auc, cr, cm, additional_evaluation = True, additional_medical_type = additional_evaluation)
             
         return classifier
     else:
