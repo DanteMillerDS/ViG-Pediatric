@@ -2,7 +2,8 @@ import numpy as np
 from tqdm import tqdm
 from torch import nn
 import torch.optim as optim
-import torch
+import torch._dynamo
+torch._dynamo.config.suppress_errors = True
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 from sklearn.metrics import classification_report, confusion_matrix
 import os
@@ -16,8 +17,8 @@ class TrainModelClassifier:
         """
         self.medical_type = medical_type
         self.model_name = model_name
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.configure()
+        self.device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = self.load_model()
         self.wd = 0.1 if self.medical_type == "ucsd" else 1e-5
         self.optimizer = optim.Adam(self.model.parameters(), lr=1e-5,weight_decay = self.wd)
