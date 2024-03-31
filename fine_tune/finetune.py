@@ -90,10 +90,10 @@ class TrainModelClassifier:
             else:
                 model = self.model_dictionary[self.model_name]()
                 if self.mean_and_std is not None:
-                    model.default_cfgs["mean"] = self.mean_and_std["mean"]
-                    model.default_cfgs["std"] = self.mean_and_std["std"]
+                    model.default_cfg["mean"] = self.mean_and_std["mean"]
+                    model.default_cfg["std"] = self.mean_and_std["std"]
                     print(f"Model {self.model_name} loaded with mean and std normalization.")
-                    print(f"Mean: {model.default_cfgs['mean']}, Std: {model.default_cfgs['std']}")
+                    print(f"Mean: {model.default_cfg['mean']}, Std: {model.default_cfg['std']}")
                
             model.compile()
             model.to(self.device)
