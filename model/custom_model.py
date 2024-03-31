@@ -2,7 +2,15 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class Model(nn.Module):
+    """
+    A custom model for the AI Severity project.
+    param base_model: The base model to use for the custom model.
+    param num_classes: The number of classes for the model.
+    param dropout: The dropout rate for the model.
+    return: The custom model.
+    """
     def __init__(self, base_model, num_classes=1, dropout=0.2):
         super(Model, self).__init__()
         self.features = nn.Sequential(*list(base_model.children())[:-1])
