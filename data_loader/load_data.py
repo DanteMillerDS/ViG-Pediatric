@@ -15,7 +15,7 @@ class ImagePreprocessor:
     """
     def __init__(self):
         pass
-    def __call__(self, jpeg_path):
+    def __call__(self, jpeg_path,mean_and_std=None):
         """
         Loads and preprocesses an image based on the model type.
         :param jpeg_path: Path to the JPEG image file.
@@ -23,7 +23,13 @@ class ImagePreprocessor:
         """
         img = image.load_img(jpeg_path, target_size=(224, 224),
                                  color_mode='rgb', interpolation='lanczos')
-        inputs = np.asarray(img, dtype='uint8') / 255
+        inputs = np.asarray(img, dtype='uint8')
+        if mean_and_std:
+            inputs = (inputs - mean_and_std["mean"]) / mean_and_std["std"]
+        else:
+            print("Invalid medical type!")
+            print("Normalizing with default values 255")
+            inputs = inputs / 255
         return inputs
 
 class AiSeverity:
@@ -35,15 +41,15 @@ class AiSeverity:
         self.device = device if device is not None else torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.preprocessor = ImagePreprocessor()
 
-    def process_image(self, jpeg_path):
+    def process_image(self, jpeg_path,mean_and_std=None):
         """
         Processes an image through the preprocessor.
         :param jpeg_path: Path to the image file.
         :return: Processed image data.
         """
-        return self.preprocessor(jpeg_path)
+        return self.preprocessor(jpeg_path, mean_and_std)
 
-def process_folder(folder_path, ai_severity):
+def process_folder(folder_path, ai_severity, mean_and_std = None):
     """
     Processes all images in a given folder, labeling them based on their subdirectory.
     :param folder_path: Path to the base folder containing subdirectories for classification.
@@ -60,7 +66,7 @@ def process_folder(folder_path, ai_severity):
         for file_name in files:
             file_path = os.path.join(current_folder_path, file_name)
             if os.path.isfile(file_path):
-                sample = ai_severity.process_image(file_path)
+                sample = ai_severity.process_image(file_path,mean_and_std)
                 file_samples[file_path] = sample
                 file_labels[file_path] = label
     return file_samples, file_labels
@@ -99,7 +105,7 @@ def prepare_data_generators(samples, labels, batch_size, finetune = False):
       )
     return len(generator), generator
 
-def create_loader(medical_type, batch_size, finetune = False):
+def create_loader(medical_type, batch_size, finetune = False, mean_and_std = None):
     """
     Initializes the AISeverity model, processes image folders, and prepares data generators.
     :param medical_type: The medical condition or type to analyze.
@@ -108,9 +114,9 @@ def create_loader(medical_type, batch_size, finetune = False):
     :return: Lists of data generators and their corresponding lengths.
     """
     ai_severity = AiSeverity()
-    train_samples, train_labels = process_folder(f'{medical_type}/Train', ai_severity)
-    validation_samples, validation_labels = process_folder(f'{medical_type}/Validation', ai_severity)
-    test_samples, test_labels = process_folder(f'{medical_type}/Test', ai_severity)
+    train_samples, train_labels = process_folder(f'{medical_type}/Train', ai_severity,mean_and_std)
+    validation_samples, validation_labels = process_folder(f'{medical_type}/Validation', ai_severity,mean_and_std)
+    test_samples, test_labels = process_folder(f'{medical_type}/Test', ai_severity,mean_and_std)
     train_length, train_generator = prepare_data_generators(train_samples, train_labels, batch_size,finetune and True)
     validation_length, validation_generator = prepare_data_generators(validation_samples, validation_labels, batch_size,finetune and True)
     test_length, test_generator = prepare_data_generators(test_samples, test_labels, batch_size,finetune and False)

@@ -14,7 +14,7 @@ import torchvision.models as models
 from model.custom_model import Model
 
 class TrainModelClassifier:
-    def __init__(self, medical_type, model_name, epochs=50):
+    def __init__(self, medical_type, model_name, mean_and_std, epochs=50):
         """
         Initializes the Model with a specific medical type and computational device.
         """
@@ -39,6 +39,7 @@ class TrainModelClassifier:
             }
         self.medical_type = medical_type
         self.model_name = model_name
+        self.mean_and_std = mean_and_std
         self.configure()
         self.device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = self.load_model()
@@ -88,6 +89,12 @@ class TrainModelClassifier:
                 model = Model(base_model=model)
             else:
                 model = self.model_dictionary[self.model_name]()
+                if self.mean_and_std is not None:
+                    model.default_cfgs["mean"] = self.mean_and_std["mean"]
+                    model.default_cfgs["std"] = self.mean_and_std["std"]
+                    print(f"Model {self.model_name} loaded with mean and std normalization.")
+                    print(f"Mean: {model.default_cfgs['mean']}, Std: {model.default_cfgs['std']}")
+               
             model.compile()
             model.to(self.device)
         else:
