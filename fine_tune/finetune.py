@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from model.vig_model import vig_ti_224_gelu, vig_s_224_gelu, vig_b_224_gelu
 from model.pvig_model import pvig_ti_224_gelu, pvig_s_224_gelu, pvig_b_224_gelu, pvig_m_224_gelu
 import torchvision.models as models
-
+from model.custom_model import Model
 
 class TrainModelClassifier:
     def __init__(self, medical_type, model_name, epochs=50):
@@ -78,7 +78,7 @@ class TrainModelClassifier:
         else:
             print("Error configuring NVIDIA library.")
         torch._dynamo.config.suppress_errors = True
-
+    
     def load_model(self):
         """
         Loads a model
@@ -88,10 +88,8 @@ class TrainModelClassifier:
             raise ValueError("Model name not specified.")
         elif self.model_name in self.model_dictionary.keys():
             model = self.model_dictionary[self.model_name]()
-            # if self.model_name in ["resnet18", "alexnet", "vgg16", "squeezenet", "densenet", "inception", "googlenet", "shufflenet", "mobilenet_v2", "mobilenet_v3_large", "mobilenet_v3_small", "resnext50_32x4d", "wide_resnet50_2", "mnasnet"]:
-            #     model.fc = nn.Linear(model.fc.in_features, 1)
-            #     nn.Linear(n_inputs, 256), nn.ReLU(), nn.Dropout(0.2),
-            #     nn.Linear(256, n_classes), nn.LogSoftmax(dim=1))
+            if self.model_name in ["resnet18", "alexnet", "vgg16", "squeezenet", "densenet", "inception", "googlenet", "shufflenet", "mobilenet_v2", "mobilenet_v3_large", "mobilenet_v3_small", "resnext50_32x4d", "wide_resnet50_2", "mnasnet"]:
+                model = Model(model)
             model.compile()
             model.to(self.device)
         else:
