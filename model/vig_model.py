@@ -21,7 +21,7 @@ from timm.models.registry import register_model
 def _cfg(url='', **kwargs):
     return {
         'url': url,
-        'num_classes': 1000, 'input_size': (3, 224, 224), 'pool_size': None,
+        'num_classes': 1, 'input_size': (3, 224, 224), 'pool_size': None,
         'crop_pct': .9, 'interpolation': 'bicubic',
         'mean': IMAGENET_DEFAULT_MEAN, 'std': IMAGENET_DEFAULT_STD,
         'first_conv': 'patch_embed.proj', 'classifier': 'head',
@@ -144,7 +144,7 @@ class DeepGCN(torch.nn.Module):
 @register_model
 def vig_ti_224_gelu(pretrained=False, **kwargs):
     class OptInit:
-        def __init__(self, num_classes=2, drop_path_rate=0.0, drop_rate=0.0, num_knn=9, **kwargs):
+        def __init__(self, num_classes=1, drop_path_rate=0.0, drop_rate=0.0, num_knn=9, **kwargs):
             self.k = num_knn # neighbor num (default:9)
             self.conv = 'mr' # graph conv layer {edge, mr}
             self.act = 'gelu' # activation layer {relu, prelu, leakyrelu, gelu, hswish}
@@ -167,7 +167,7 @@ def vig_ti_224_gelu(pretrained=False, **kwargs):
 @register_model
 def vig_s_224_gelu(pretrained=False, **kwargs):
     class OptInit:
-        def __init__(self, num_classes=2, drop_path_rate=0.0, drop_rate=0.0, num_knn=9, **kwargs):
+        def __init__(self, num_classes=1, drop_path_rate=0.0, drop_rate=0.0, num_knn=9, **kwargs):
             self.k = num_knn # neighbor num (default:9)
             self.conv = 'mr' # graph conv layer {edge, mr}
             self.act = 'gelu' # activation layer {relu, prelu, leakyrelu, gelu, hswish}
@@ -191,7 +191,7 @@ def vig_s_224_gelu(pretrained=False, **kwargs):
 @register_model
 def vig_b_224_gelu(pretrained=False, **kwargs):
     class OptInit:
-        def __init__(self, num_classes=2, drop_path_rate=0.0, drop_rate=0.0, num_knn=9, **kwargs):
+        def __init__(self, num_classes=1, drop_path_rate=0.0, drop_rate=0.0, num_knn=9, **kwargs):
             self.k = num_knn # neighbor num (default:9)
             self.conv = 'mr' # graph conv layer {edge, mr}
             self.act = 'gelu' # activation layer {relu, prelu, leakyrelu, gelu, hswish}

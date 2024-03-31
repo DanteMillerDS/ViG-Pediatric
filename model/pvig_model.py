@@ -21,7 +21,7 @@ act_layer = gcn_lib.act_layer
 def _cfg(url='', **kwargs):
     return {
         'url': url,
-        'num_classes': 1000, 'input_size': (3, 224, 224), 'pool_size': None,
+        'num_classes': 1, 'input_size': (3, 224, 224), 'pool_size': None,
         'crop_pct': .9, 'interpolation': 'bicubic',
         'mean': IMAGENET_DEFAULT_MEAN, 'std': IMAGENET_DEFAULT_STD,
         'first_conv': 'patch_embed.proj', 'classifier': 'head',
@@ -142,7 +142,7 @@ class DeepGCN(torch.nn.Module):
                               nn.BatchNorm2d(1024),
                               act_layer(act),
                               nn.Dropout(opt.dropout),
-                              nn.Conv2d(1024, opt.n_classes, 1, bias=True))
+                              nn.Conv2d(1024, 1, 1, bias=True))
         self.model_init()
 
     def model_init(self):
@@ -166,7 +166,7 @@ class DeepGCN(torch.nn.Module):
 @register_model
 def pvig_ti_224_gelu(pretrained=False, **kwargs):
     class OptInit:
-        def __init__(self, num_classes=1000, drop_path_rate=0.0, **kwargs):
+        def __init__(self, num_classes=2, drop_path_rate=0.0, **kwargs):
             self.k = 9 # neighbor num (default:9)
             self.conv = 'mr' # graph conv layer {edge, mr}
             self.act = 'gelu' # activation layer {relu, prelu, leakyrelu, gelu, hswish}
@@ -190,7 +190,7 @@ def pvig_ti_224_gelu(pretrained=False, **kwargs):
 @register_model
 def pvig_s_224_gelu(pretrained=False, **kwargs):
     class OptInit:
-        def __init__(self, num_classes=1000, drop_path_rate=0.0, **kwargs):
+        def __init__(self, num_classes=1, drop_path_rate=0.0, **kwargs):
             self.k = 9 # neighbor num (default:9)
             self.conv = 'mr' # graph conv layer {edge, mr}
             self.act = 'gelu' # activation layer {relu, prelu, leakyrelu, gelu, hswish}
@@ -214,7 +214,7 @@ def pvig_s_224_gelu(pretrained=False, **kwargs):
 @register_model
 def pvig_m_224_gelu(pretrained=False, **kwargs):
     class OptInit:
-        def __init__(self, num_classes=1000, drop_path_rate=0.0, **kwargs):
+        def __init__(self, num_classes=1, drop_path_rate=0.0, **kwargs):
             self.k = 9 # neighbor num (default:9)
             self.conv = 'mr' # graph conv layer {edge, mr}
             self.act = 'gelu' # activation layer {relu, prelu, leakyrelu, gelu, hswish}
@@ -238,7 +238,7 @@ def pvig_m_224_gelu(pretrained=False, **kwargs):
 @register_model
 def pvig_b_224_gelu(pretrained=False, **kwargs):
     class OptInit:
-        def __init__(self, num_classes=1000, drop_path_rate=0.0, **kwargs):
+        def __init__(self, num_classes=1, drop_path_rate=0.0, **kwargs):
             self.k = 9 # neighbor num (default:9)
             self.conv = 'mr' # graph conv layer {edge, mr}
             self.act = 'gelu' # activation layer {relu, prelu, leakyrelu, gelu, hswish}
