@@ -45,9 +45,9 @@ class TrainModelClassifier:
         self.device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = self.load_model()
         if self.convopt:
-            self.optimizer = optim.AdamW(self.model.model.parameters(), lr=1e-3,weight_decay = 1e-4)
+            self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-3,weight_decay = 1e-4)
         else:
-            self.optimizer = optim.AdamW(self.model.model.parameters(), lr=2e-3,weight_decay = 0.05)
+            self.optimizer = optim.AdamW(self.model.parameters(), lr=2e-3,weight_decay = 0.05)
         self.epochs = epochs
         self.loss = nn.BCEWithLogitsLoss()
         self.metric_history  = {
