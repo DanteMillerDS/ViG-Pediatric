@@ -18,6 +18,7 @@ class TrainModelClassifier:
         """
         Initializes the Model with a specific medical type and computational device.
         """
+        self.convopt = False
         self.model_dictionary = {
             "vig_ti_224_gelu": vig_ti_224_gelu,
             "vig_s_224_gelu": vig_s_224_gelu,
@@ -43,7 +44,10 @@ class TrainModelClassifier:
         self.configure()
         self.device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = self.load_model()
-        self.optimizer = optim.AdamW(self.model.parameters(), lr=2e-3,weight_decay = 0.05)
+        if self.convopt:
+            self.optimizer = optim.AdamW(self.model.model.parameters(), lr=1e-3,weight_decay = 1e-4)
+        else:
+            self.optimizer = optim.AdamW(self.model.model.parameters(), lr=2e-3,weight_decay = 0.05)
         self.epochs = epochs
         self.loss = nn.BCEWithLogitsLoss()
         self.metric_history  = {
@@ -86,6 +90,7 @@ class TrainModelClassifier:
             if self.model_name in ["resnet50", "alexnet", "vgg19", "squeezenet", "densenet", "inception", "googlenet", "mobilenet_v3_large"]:
                 model = self.model_dictionary[self.model_name]
                 model = Model(base_model=model)
+                self.convopt = True
             else:
                 model = self.model_dictionary[self.model_name]()
                 if self.mean_and_std is not None:
