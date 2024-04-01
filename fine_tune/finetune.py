@@ -31,8 +31,8 @@ class TrainModelClassifier:
             "vgg19": models.vgg19(),
             "squeezenet": models.squeezenet1_0(),
             "densenet": models.densenet121(),
-            "inception": models.inception_v3(),
-            "googlenet": models.googlenet(),
+            "inception": models.inception_v3(aux_logits=False),
+            "googlenet": models.googlenet(aux_logits = False),
             "mobilenet_v3_large": models.mobilenet_v3_large(),
             "wide_resnet50_2": models.wide_resnet50_2(),
             "mnasnet": models.mnasnet1_0()
@@ -83,7 +83,7 @@ class TrainModelClassifier:
         if self.model_name is None:
             raise ValueError("Model name not specified.")
         elif self.model_name in self.model_dictionary.keys():
-            if self.model_name in ["resnet50", "alexnet", "vgg19", "squeezenet", "densenet", "inception", "googlenet", "mobilenet_v3_large", "wide_resnet50_2", "mnasnet"]:
+            if self.model_name in ["resnet50", "alexnet", "vgg19", "squeezenet", "densenet", "inception", "googlenet", "mobilenet_v3_large"]:
                 model = self.model_dictionary[self.model_name]
                 model = Model(base_model=model)
             else:
