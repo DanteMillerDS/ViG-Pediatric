@@ -24,24 +24,27 @@ class Model(nn.Module):
         elif isinstance(base_model,models.DenseNet):
           self.features = nn.Sequential(*list(base_model.children())[:-1])
           self.in_features = base_model.classifier.in_features
+        elif isinstance(base_model,models.EfficientNet):
+          self.features = nn.Sequential(*list(base_model.children())[:-1])
+          self.in_features = base_model.classifier[1].in_features
         elif isinstance(base_model,models.Inception3):
           self.features = nn.Sequential(*list(base_model.children())[:-1])
           self.in_features = base_model.fc.in_features
-        elif isinstance(base_model,models.SqueezeNet):
-          self.features = nn.Sequential(*list(base_model.children())[:-1])
-          self.in_features = 512
-        elif isinstance(base_model,models.VGG):
-          self.features = nn.Sequential(*list(base_model.children())[:-2])
-          self.in_features = 512
-        elif isinstance(base_model,models.AlexNet):
-          self.features = nn.Sequential(*list(base_model.children())[:-2])
-          self.in_features = 256
-        elif isinstance(base_model,models.GoogLeNet):
-          self.features = nn.Sequential(*list(base_model.children())[:-1])
-          self.in_features = 1024
-        elif isinstance(base_model,models.MobileNetV3):
-          self.features = nn.Sequential(*list(base_model.children())[:-1])
-          self.in_features = 960
+        # elif isinstance(base_model,models.SqueezeNet):
+        #   self.features = nn.Sequential(*list(base_model.children())[:-1])
+        #   self.in_features = 512
+        # elif isinstance(base_model,models.VGG):
+        #   self.features = nn.Sequential(*list(base_model.children())[:-2])
+        #   self.in_features = 512
+        # elif isinstance(base_model,models.AlexNet):
+        #   self.features = nn.Sequential(*list(base_model.children())[:-2])
+        #   self.in_features = 256
+        # elif isinstance(base_model,models.GoogLeNet):
+        #   self.features = nn.Sequential(*list(base_model.children())[:-1])
+        #   self.in_features = 1024
+        # elif isinstance(base_model,models.MobileNetV3):
+        #   self.features = nn.Sequential(*list(base_model.children())[:-1])
+        #   self.in_features = 960
         else:
           raise ValueError("Invalid base model")
           

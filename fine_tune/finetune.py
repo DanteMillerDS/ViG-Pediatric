@@ -28,15 +28,18 @@ class TrainModelClassifier:
             "pvig_m_224_gelu": pvig_m_224_gelu,
             "pvig_b_224_gelu": pvig_b_224_gelu,
             "resnet50": models.resnet50(),
-            "alexnet": models.alexnet(),
-            "vgg19": models.vgg19(),
-            "squeezenet": models.squeezenet1_0(),
-            "densenet": models.densenet121(),
-            "inception": models.inception_v3(aux_logits=False),
-            "googlenet": models.googlenet(aux_logits = False),
-            "mobilenet_v3_large": models.mobilenet_v3_large(),
-            "wide_resnet50_2": models.wide_resnet50_2(),
-            "mnasnet": models.mnasnet1_0()
+            "efficientnetb5": models.efficientnet_b5(),
+            "densenet161": models.densenet161(),
+            "inceptionv3": models.inception_v3(aux_logits=False)
+            # "alexnet": models.alexnet(),
+            # "vgg19": models.vgg19(),
+            # "squeezenet": models.squeezenet1_0(),
+            # "densenet121": models.densenet121(),
+            # "googlenet": models.googlenet(aux_logits = False),
+            # "mobilenet_v3_large": models.mobilenet_v3_large(),
+            # "wide_resnet50_2": models.wide_resnet50_2(),
+            # "mnasnet": models.mnasnet1_0()
+            # "efficientnetb2": models.efficientnet_b2(),
             }
         self.medical_type = medical_type
         self.model_name = model_name
@@ -87,7 +90,7 @@ class TrainModelClassifier:
         if self.model_name is None:
             raise ValueError("Model name not specified.")
         elif self.model_name in self.model_dictionary.keys():
-            if self.model_name in ["resnet50", "alexnet", "vgg19", "squeezenet", "densenet", "inception", "googlenet", "mobilenet_v3_large"]:
+            if self.model_name in ["resnet50","densenet161","efficientnetb5","inceptionv3"]:
                 model = self.model_dictionary[self.model_name]
                 model = Model(base_model=model)
                 self.convopt = True
