@@ -50,7 +50,7 @@ class TrainModelClassifier:
         if self.convopt:
             self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-4,weight_decay = 0.01)
         else:
-            self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-5,weight_decay = 1e-3)
+            self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-4,weight_decay = 1e-2)
         self.epochs = epochs
         self.loss = nn.BCEWithLogitsLoss()
         self.metric_history  = {
