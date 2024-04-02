@@ -14,7 +14,7 @@ import torchvision.models as models
 from model.custom_model import Model
 
 class TrainModelClassifier:
-    def __init__(self, medical_type, model_name, mean_and_std, epochs=20):
+    def __init__(self, medical_type, model_name, mean_and_std, epochs=30):
         """
         Initializes the Model with a specific medical type and computational device.
         """
@@ -50,7 +50,7 @@ class TrainModelClassifier:
         if self.convopt:
             self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-4,weight_decay = 0.01)
         else:
-            self.optimizer = optim.AdamW(self.model.parameters(), lr=2e-3,weight_decay = 0.05)
+            self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-5,weight_decay = 1e-3)
         self.epochs = epochs
         self.loss = nn.BCEWithLogitsLoss()
         self.metric_history  = {
