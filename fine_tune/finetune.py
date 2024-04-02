@@ -30,7 +30,7 @@ class TrainModelClassifier:
             "resnet50": models.resnet50(),
             "efficientnetb5": models.efficientnet_b5(),
             "densenet161": models.densenet161(),
-            "inceptionv3": models.inception_v3(aux_logits=False)
+            "inceptionv3": models.inception_v3(aux_logits=False),
             # "alexnet": models.alexnet(),
             # "vgg19": models.vgg19(),
             # "squeezenet": models.squeezenet1_0(),
@@ -48,7 +48,7 @@ class TrainModelClassifier:
         self.device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = self.load_model()
         if self.convopt:
-            self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-3,weight_decay = 1e-4)
+            self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-4,weight_decay = 0.01)
         else:
             self.optimizer = optim.AdamW(self.model.parameters(), lr=2e-3,weight_decay = 0.05)
         self.epochs = epochs
