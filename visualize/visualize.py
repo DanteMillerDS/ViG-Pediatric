@@ -53,7 +53,8 @@ def plot_images(set_images_labels, titles, filepath):
             plt.subplot(3, len(image_batch), j + 1 + (i * len(image_batch)))
             plt.imshow(image)
             label = "Covid" if label == 1 else "Normal"
-            plt.title(f"Patient has {label} lungs.")
+            plt.title(f"Patient has {label} lungs.", fontsize = 18)
+            plt.axis('off')  
     plt.tight_layout()
     plt.savefig(filepath)
     print(f"Results saved to {filepath}")
