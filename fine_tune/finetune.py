@@ -49,7 +49,7 @@ class TrainModelClassifier:
         self.model = self.load_model()
         if self.convopt:
             self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-4,weight_decay = 1e-3)
-            self.early_stopping_patience = 10
+            self.early_stopping_patience = 30
         else:
             self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-4,weight_decay = 1e-2)
             self.early_stopping_patience = 30
