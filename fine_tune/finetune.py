@@ -48,9 +48,11 @@ class TrainModelClassifier:
         self.device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = self.load_model()
         if self.convopt:
-            self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-3,weight_decay = 1e-4)
+            self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-4,weight_decay = 1e-3)
+            self.early_stopping_patience = 10
         else:
             self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-4,weight_decay = 1e-2)
+            self.early_stopping_patience = 10
         self.epochs = epochs
         self.loss = nn.BCEWithLogitsLoss()
         self.metric_history  = {
@@ -65,7 +67,6 @@ class TrainModelClassifier:
             'train_auc': [],
             'val_auc': [],
         }
-        self.early_stopping_patience = 5
         self.early_stopping_counter = 0
         self.best_val_loss = float('inf')
         self.early_stop = False

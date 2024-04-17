@@ -27,8 +27,8 @@ class ImagePreprocessor:
         if mean_and_std:
             inputs = (inputs - mean_and_std["mean"]) / mean_and_std["std"]
         else:
-            print("Invalid medical type!")
-            print("Normalizing with default values 255")
+            #print("Invalid medical type!")
+            #print("Normalizing with default values 255")
             inputs = inputs / 255
         return inputs
 

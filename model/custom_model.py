@@ -15,7 +15,7 @@ class Model(nn.Module):
     param dropout: The dropout rate for the model.
     return: The custom model.
     """
-    def __init__(self, base_model, num_classes=1, dropout=0.2):
+    def __init__(self, base_model, num_classes=1, dropout=0.5):
         super(Model, self).__init__()
         if isinstance(base_model,models.ResNet):
           self.features = nn.Sequential(*list(base_model.children())[:-1])
@@ -47,22 +47,13 @@ class Model(nn.Module):
         #   self.in_features = 960
         else:
           raise ValueError("Invalid base model")
-          
-        self.global_avg_pool = nn.AdaptiveAvgPool2d((1, 1))
         self.flatten = nn.Flatten()
         self.dropout1 = nn.Dropout(dropout)
-        self.fc1 = nn.Linear(in_features=self.in_features, out_features=128)
-        self.relu = nn.ReLU()
-        self.dropout2 = nn.Dropout(dropout)
-        self.fc2 = nn.Linear(in_features=128, out_features=num_classes)
+        self.fc1 = nn.Linear(in_features=self.in_features, out_features=1)
 
     def forward(self, x):
         x = self.features(x)
-        x = self.global_avg_pool(x)
         x = self.flatten(x)
         x = self.dropout1(x)
         x = self.fc1(x)
-        x = self.relu(x)
-        x = self.dropout2(x)
-        x = self.fc2(x)
         return x
