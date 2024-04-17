@@ -14,7 +14,7 @@ import torchvision.models as models
 from model.custom_model import Model
 
 class TrainModelClassifier:
-    def __init__(self, medical_type, model_name, mean_and_std, epochs=30):
+    def __init__(self, medical_type, model_name, mean_and_std, epochs=50):
         """
         Initializes the Model with a specific medical type and computational device.
         """
@@ -52,7 +52,7 @@ class TrainModelClassifier:
             self.early_stopping_patience = 10
         else:
             self.optimizer = optim.AdamW(self.model.parameters(), lr=1e-4,weight_decay = 1e-2)
-            self.early_stopping_patience = 10
+            self.early_stopping_patience = 30
         self.epochs = epochs
         self.loss = nn.BCEWithLogitsLoss()
         self.metric_history  = {
