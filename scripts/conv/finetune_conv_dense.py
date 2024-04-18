@@ -35,7 +35,7 @@ if __name__ == "__main__":
     extract_data.mount_and_process()
     mean_and_std = {"ori": {"mean": np.array([0.4856, 0.4856, 0.4856]), "std": np.array([0.2463, 0.2463, 0.2463])}, "ucsd": {"mean": np.array([0.4655, 0.4655, 0.4655]), "std": np.array([0.2523, 0.2523, 0.2523])}}
     batch_size = 128 
-    model_types = ["densenet169"]
+    model_types = ["densenet201"]
     medical_types = ['ucsd', 'ori']
     for i in range(len(model_types)):
         ucsd_classifier = run_finetune_convs(medical_types[0], model_types[i], batch_size, additional_evaluation=medical_types[1], mean_and_std = mean_and_std[medical_types[0]])
