@@ -29,7 +29,7 @@ class TrainModelClassifier:
             "pvig_b_224_gelu": pvig_b_224_gelu,
             "resnet50": models.resnet50(),
             "efficientnetb5": models.efficientnet_b5(),
-            "densenet201": models.densenet201(),
+            "densenet161": models.densenet161(),
             "inceptionv3": models.inception_v3(aux_logits=False),
             # "alexnet": models.alexnet(),
             # "vgg19": models.vgg19(),
@@ -91,7 +91,7 @@ class TrainModelClassifier:
         if self.model_name is None:
             raise ValueError("Model name not specified.")
         elif self.model_name in self.model_dictionary.keys():
-            if self.model_name in ["resnet50","densenet201","efficientnetb5","inceptionv3"]:
+            if self.model_name in ["resnet50","densenet161","efficientnetb5","inceptionv3"]:
                 model = self.model_dictionary[self.model_name]
                 model = Model(base_model=model)
                 self.convopt = True
