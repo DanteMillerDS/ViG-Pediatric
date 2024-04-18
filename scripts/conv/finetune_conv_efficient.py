@@ -17,7 +17,7 @@ def run_finetune_convs(medical_type, model_type, batch_size, additional_evaluati
     """
     generators, lengths = load_data.create_loader(medical_type, batch_size,finetune = True, mean_and_std = mean_and_std)
     visualize.save_random_images_from_generators(generators, [medical_type, model_type, "finetune"], 2, mean_and_std = mean_and_std)
-    if model_type in ["resnet50","densenet161","efficientnetb5","inceptionv3"]:
+    if model_type in ["resnet50","densenet169","efficientnetb5","inceptionv3"]:
         classifier = TrainModelClassifier(medical_type,model_type, mean_and_std = mean_and_std)
         classifier.run(generators, lengths)
         if additional_evaluation:
