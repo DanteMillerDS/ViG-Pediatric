@@ -15,7 +15,7 @@ class Model(nn.Module):
     param dropout: The dropout rate for the model.
     return: The custom model.
     """
-    def __init__(self, base_model, num_classes=1, dropout=0.5):
+    def __init__(self, base_model, num_classes=1, dropout=0.2):
         super(Model, self).__init__()
         if isinstance(base_model,models.ResNet):
           self.features = nn.Sequential(*list(base_model.children())[:-1])
