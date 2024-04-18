@@ -47,12 +47,14 @@ class Model(nn.Module):
         #   self.in_features = 960
         else:
           raise ValueError("Invalid base model")
+        self.pooling = nn.AdaptiveAvgPool2d((1, 1))
         self.flatten = nn.Flatten()
         self.dropout1 = nn.Dropout(dropout)
         self.fc1 = nn.Linear(in_features=self.in_features, out_features=1)
 
     def forward(self, x):
         x = self.features(x)
+        x = self.pooling(x)
         x = self.flatten(x)
         x = self.dropout1(x)
         x = self.fc1(x)
