@@ -17,11 +17,13 @@ class Model(nn.Module):
     """
     def __init__(self, base_model, num_classes=1, dropout=0.2):
         super(Model, self).__init__()
+        self.densetype = False
         if isinstance(base_model,models.ResNet):
           self.features = nn.Sequential(*list(base_model.children())[:-1])
           if base_model.fc.in_features:
             self.in_features = base_model.fc.in_features
         elif isinstance(base_model,models.DenseNet):
+          self.densetype = True
           self.features = nn.Sequential(*list(base_model.children())[:-1])
           self.in_features = base_model.classifier.in_features
         elif isinstance(base_model,models.EfficientNet):
@@ -47,14 +49,16 @@ class Model(nn.Module):
         #   self.in_features = 960
         else:
           raise ValueError("Invalid base model")
-        self.pooling = nn.AdaptiveAvgPool2d((1, 1))
+        if self.densetype:
+          self.pooling = nn.AdaptiveAvgPool2d((1, 1))
         self.flatten = nn.Flatten()
         self.dropout1 = nn.Dropout(dropout)
         self.fc1 = nn.Linear(in_features=self.in_features, out_features=1)
 
     def forward(self, x):
         x = self.features(x)
-        x = self.pooling(x)
+        if self.densetype:
+          x = self.pooling(x)
         x = self.flatten(x)
         x = self.dropout1(x)
         x = self.fc1(x)
