@@ -12,7 +12,7 @@ from model.vig_model import vig_ti_224_gelu, vig_s_224_gelu, vig_b_224_gelu
 from model.pvig_model import pvig_ti_224_gelu, pvig_s_224_gelu, pvig_b_224_gelu, pvig_m_224_gelu
 import torchvision.models as models
 from model.custom_model import Model
-from PVT.classification.pvt_v2 import pvt_v2_b2
+from PVT.classification.pvt_v2 import pvt_v2_b2_li
 
 class TrainModelClassifier:
     def __init__(self, medical_type, model_name, mean_and_std, epochs=50):
