@@ -28,7 +28,7 @@ class TrainModelClassifier:
             "pvig_s_224_gelu": pvig_s_224_gelu,
             "pvig_m_224_gelu": pvig_m_224_gelu,
             "pvig_b_224_gelu": pvig_b_224_gelu,
-            "pvt_v2_b2": pvt_v2_b2,
+            "pvt_v2_b2": pvt_v2_b2_li,
             "resnet50": models.resnet50(),
             "efficientnetb5": models.efficientnet_b5(),
             "densenet161": models.densenet161(),
