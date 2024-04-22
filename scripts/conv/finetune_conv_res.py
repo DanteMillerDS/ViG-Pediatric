@@ -34,7 +34,7 @@ def run_finetune_convs(medical_type, model_type, batch_size, additional_evaluati
 if __name__ == "__main__":
     extract_data.mount_and_process()
     mean_and_std = {"ori": {"mean": np.array([0.4856, 0.4856, 0.4856]), "std": np.array([0.2463, 0.2463, 0.2463])}, "ucsd": {"mean": np.array([0.4655, 0.4655, 0.4655]), "std": np.array([0.2523, 0.2523, 0.2523])}}
-    batch_size = 128 
+    batch_size = 64 
     model_types = ["resnet50"]
     medical_types = ['ucsd', 'ori']
     for i in range(len(model_types)):
