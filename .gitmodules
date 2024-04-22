@@ -4,3 +4,6 @@
 [submodule "PVT"]
 	path = PVT
 	url = https://github.com/whai362/PVT.git
+[submodule "CycleMLP"]
+	path = CycleMLP
+	url = https://github.com/ShoufaChen/CycleMLP.git

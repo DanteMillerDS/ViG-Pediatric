@@ -13,7 +13,7 @@ from model.pvig_model import pvig_ti_224_gelu, pvig_s_224_gelu, pvig_b_224_gelu,
 import torchvision.models as models
 from model.custom_model import Model
 from PVT.classification.pvt_v2 import pvt_v2_b2
-
+from CycleMLP.cycle_mlp import CycleMLP_B2
 class TrainModelClassifier:
     def __init__(self, medical_type, model_name, mean_and_std, epochs=50):
         """
@@ -29,6 +29,7 @@ class TrainModelClassifier:
             "pvig_m_224_gelu": pvig_m_224_gelu,
             "pvig_b_224_gelu": pvig_b_224_gelu,
             "pvt_v2_b2": pvt_v2_b2,
+            "CycleMLP_B2": CycleMLP_B2,
             "resnet50": models.resnet50(),
             "efficientnetb5": models.efficientnet_b5(),
             "densenet161": models.densenet161(),
@@ -97,7 +98,7 @@ class TrainModelClassifier:
                 model = self.model_dictionary[self.model_name]
                 model = Model(base_model=model)
                 # self.convopt = True
-            elif self.model_name in ["pvt_v2_b2"]:
+            elif self.model_name in ["pvt_v2_b2","CycleMLP_B2"]:
                 model = self.model_dictionary[self.model_name](num_classes=1)
             else:
                 model = self.model_dictionary[self.model_name]()
