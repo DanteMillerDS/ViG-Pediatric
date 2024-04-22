@@ -8,7 +8,7 @@ import data_loader.load_data as load_data
 import visualize.visualize as visualize
 from fine_tune.finetune import TrainModelClassifier
 import numpy as np
-def run_finetune_pvt_v2_b1(medical_type, model_type, batch_size, additional_evaluation = False, mean_and_std = False):
+def run_finetune_pvt_v2_b2(medical_type, model_type, batch_size, additional_evaluation = False, mean_and_std = False):
     """
    Performs fine-tuning of a conv models on a given medical type and model type.
     :param medical_type: The type of medical data to classify ('ucsd', 'ori').
@@ -17,7 +17,7 @@ def run_finetune_pvt_v2_b1(medical_type, model_type, batch_size, additional_eval
     """
     generators, lengths = load_data.create_loader(medical_type, batch_size,finetune = True, mean_and_std = mean_and_std)
     visualize.save_random_images_from_generators(generators, [medical_type, model_type, "finetune"], 2, mean_and_std = mean_and_std)
-    if model_type in ["pvt_v2_b1"]:
+    if model_type in ["pvt_v2_b2"]:
         classifier = TrainModelClassifier(medical_type,model_type, mean_and_std = mean_and_std)
         classifier.run(generators, lengths)
         if additional_evaluation:
@@ -34,9 +34,9 @@ def run_finetune_pvt_v2_b1(medical_type, model_type, batch_size, additional_eval
 if __name__ == "__main__":
     extract_data.mount_and_process()
     mean_and_std = {"ori": {"mean": np.array([0.4856, 0.4856, 0.4856]), "std": np.array([0.2463, 0.2463, 0.2463])}, "ucsd": {"mean": np.array([0.4655, 0.4655, 0.4655]), "std": np.array([0.2523, 0.2523, 0.2523])}}
-    batch_size = 128 
-    model_types = ["pvt_v2_b1"]
+    batch_size = 64 
+    model_types = ["pvt_v2_b2"]
     medical_types = ['ucsd', 'ori']
     for i in range(len(model_types)):
-        ucsd_classifier = run_finetune_pvt_v2_b1(medical_types[0], model_types[i], batch_size, additional_evaluation=medical_types[1], mean_and_std = mean_and_std[medical_types[0]])
-        ori_classifier = run_finetune_pvt_v2_b1(medical_types[1], model_types[i], batch_size, additional_evaluation=medical_types[0],mean_and_std = mean_and_std[medical_types[1]])
+        ucsd_classifier = run_finetune_pvt_v2_b2(medical_types[0], model_types[i], batch_size, additional_evaluation=medical_types[1], mean_and_std = mean_and_std[medical_types[0]])
+        ori_classifier = run_finetune_pvt_v2_b2(medical_types[1], model_types[i], batch_size, additional_evaluation=medical_types[0],mean_and_std = mean_and_std[medical_types[1]])
