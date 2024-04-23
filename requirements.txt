@@ -2,3 +2,4 @@ ftfy
 regex
 timm
 tqdm
+grad-cam
